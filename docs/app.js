@@ -276,12 +276,18 @@ $('file').onchange = () => { const f = $('file').files[0]; if (f) { $('fname').t
 ['dragover', 'dragenter'].forEach(e => dz.addEventListener(e, ev => { ev.preventDefault(); dz.classList.add('over'); }));
 ['dragleave', 'drop'].forEach(e => dz.addEventListener(e, ev => { ev.preventDefault(); dz.classList.remove('over'); }));
 dz.addEventListener('drop', ev => { if (ev.dataTransfer.files[0]) { $('file').files = ev.dataTransfer.files; $('file').onchange(); } });
-$('url').addEventListener('input', () => $('drivenote').classList.toggle('hide', !/drive\.google|docs\.google/i.test($('url').value)));
+const DRIVE_RE = /drive\.google|docs\.google/i, PLATFORM_RE = /youtube\.com|youtu\.be|vimeo|facebook|fb\.watch|instagram|tiktok|x\.com|twitter|dailymotion/i;
+function urlNote(u) {
+  if (DRIVE_RE.test(u)) return '☁ ده رابط Google Drive: المتصفح مش بيقدر يقرأه مباشرة. نزّل الفيديو من الدرايف على جهازك (⋮ ← Download) ثم اسحبه فوق.';
+  if (PLATFORM_RE.test(u)) return '🔗 روابط يوتيوب وفيميو وغيرها مش ممكن يقراها المتصفح (حماية المنصة). نزّل الفيديو على جهازك الأول ثم اسحبه فوق — أو استخدم النسخة المحلية من النظام (بتحمّل من الروابط تلقائياً).';
+  return '';
+}
+$('url').addEventListener('input', () => { const n = urlNote($('url').value); $('drivenote').textContent = n; $('drivenote').classList.toggle('hide', !n); });
 
 $('go').onclick = async () => {
   const f = $('file').files[0], u = $('url').value.trim();
   if (!f && !u) return msg('اسحب الفيديو أو الصق رابط مباشر', 1);
-  if (/drive\.google|docs\.google/i.test(u) && !f) return msg('ده رابط درايف: نزّل الفيديو على جهازك واسحبه فوق', 1);
+  if (!f && urlNote(u)) return msg(urlNote(u), 1);
   $('go').disabled = true; $('bar1i').style.width = '0'; msg('بنجهّز الفيديو…');
   try {
     await document.fonts.load(`700 100px ${FONT}`); await document.fonts.load('700 20px Graphik');
