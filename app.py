@@ -369,7 +369,7 @@ def jobs_files(p):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5055))
     if CLOUD:
-        app.run(host="0.0.0.0", port=port, debug=False)
+        app.run(host=os.environ.get("ROOYA_HOST", "0.0.0.0"), port=port, debug=False)
     else:
         import webbrowser, threading
         threading.Timer(1.2, lambda: webbrowser.open(f"http://127.0.0.1:{port}")).start()
