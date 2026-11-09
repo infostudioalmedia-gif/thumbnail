@@ -1,0 +1,9 @@
+flask
+gdown
+pillow
+opencv-python-headless<5
+numpy
+arabic-reshaper
+python-bidi
+fonttools
+yt-dlp

@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>استوديو الثمبنيل · رؤية</title>
+<style>
+@font-face{font-family:'Graphik';src:url('/fonts/GraphikArabic-Light.ttf');font-weight:300}
+@font-face{font-family:'Graphik';src:url('/fonts/GraphikArabic-Medium.ttf');font-weight:500}
+@font-face{font-family:'Graphik';src:url('/fonts/GraphikArabic-Bold.ttf');font-weight:700}
+@font-face{font-family:'Graphik';src:url('/fonts/GraphikArabic-Black.ttf');font-weight:900}
+:root{--navy:#0F194F;--blue:#1F5194;--mint:#48FFE5;--paper:#F1F8FD;--mint-tint:#DDFFFA;--alert:#D64B4B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Graphik,'Segoe UI',Tahoma,sans-serif;color:var(--navy);min-height:100vh;overflow-x:hidden;padding:0 16px 40px;
+  background:linear-gradient(165deg,#F1F8FD 0%,#DDFFFA 34%,#B6E9F2 58%,#8FA9DA 82%,#6F8CC8 100%) fixed}
+button,input,select{font-family:inherit;color:inherit}
+.hide{display:none!important}
+.wrap{max-width:960px;margin:0 auto;position:relative}
+
+.logo{position:absolute;top:16px;right:6px;height:44px}
+.hero{text-align:center;padding:64px 0 14px}
+.hero h1{font-weight:900;font-size:clamp(34px,6vw,56px);line-height:1.1}
+.hero h1 em{font-style:normal;color:var(--blue)}
+.hero p{margin-top:8px;font-weight:300;color:var(--blue);white-space:nowrap;font-size:clamp(11px,2.6vw,18px)}
+.hero i{display:block;width:64px;height:6px;border-radius:8px;background:var(--mint);margin:10px auto 0}
+
+.card{background:rgba(255,255,255,.78);border:1.5px solid rgba(31,81,148,.28);border-radius:22px;padding:22px;margin-bottom:18px;backdrop-filter:blur(6px)}
+.card h2{font-size:21px;font-weight:900;color:var(--blue);padding-bottom:10px;border-bottom:2.5px solid var(--navy);margin-bottom:16px}
+.hint{font-weight:300;color:var(--blue);font-size:14.5px;margin-bottom:12px}
+label.l{display:block;font-weight:700;font-size:14.5px;margin:14px 0 6px}
+label.l small{font-weight:300;color:var(--blue);margin-right:5px}
+.field,select{width:100%;background:#fff;border:1.5px solid var(--blue);border-radius:14px;font-size:16px;font-weight:500;padding:11px 14px;outline:none;color:var(--navy)}
+.field{direction:ltr;text-align:left}.field.rtl{direction:rtl;text-align:right}
+select{direction:rtl;cursor:pointer}
+.field:focus,select:focus{border-color:var(--navy);box-shadow:0 0 0 4px var(--mint-tint)}
+.field::placeholder{color:#9db4d1;font-weight:300}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:720px){.g2,.g3{grid-template-columns:1fr}}
+.detect{display:flex;align-items:center;gap:9px;margin:10px 2px;font-weight:700;font-size:14px;color:var(--blue)}
+.detect .dot{width:10px;height:10px;border-radius:50%;background:#9db4d1}
+.detect.ok{color:var(--navy)}.detect.ok .dot{background:var(--mint);box-shadow:0 0 0 4px rgba(72,255,229,.35)}
+.drop{display:block;border:2px dashed var(--blue);border-radius:16px;padding:12px;text-align:center;cursor:pointer;background:#fff}
+.drop:hover,.drop.over{background:var(--mint-tint)}
+.drop b{font-size:15px}.drop small{display:block;color:var(--blue);font-weight:300}
+.btn{background:var(--navy);color:var(--mint);border:0;font-weight:700;font-size:17px;padding:13px 30px;border-radius:99px;cursor:pointer;margin-top:16px}
+.btn:hover{opacity:.92}.btn:disabled{opacity:.5;cursor:wait}
+.btn.line{background:#fff;color:var(--blue);border:1.5px solid var(--blue)}
+.btn.sm{font-size:14.5px;padding:10px 20px;margin-top:0}
+.prog{height:5px;border-radius:8px;background:#dbe8f5;overflow:hidden;margin-top:14px}
+.prog i{display:block;height:100%;width:35%;background:linear-gradient(90deg,transparent,var(--mint),transparent);animation:slide 1.1s infinite linear}
+@keyframes slide{from{transform:translateX(280%)}to{transform:translateX(-120%)}}
+#msg,#msg3{margin-top:10px;font-weight:700;min-height:22px;color:var(--blue)}.err{color:var(--alert)!important}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:10px;padding:4px}
+.grid div{position:relative;border:3px solid transparent;border-radius:10px;overflow:hidden;cursor:pointer;background:#000}
+.grid div.sel{border-color:var(--navy);box-shadow:0 0 0 3px var(--mint)}
+.grid img{width:100%;display:block}
+.grid span{position:absolute;bottom:3px;left:3px;background:rgba(15,25,79,.85);color:#fff;font-size:11px;padding:1px 7px;border-radius:99px}
+.grid span.f{left:auto;right:3px;background:var(--mint);color:var(--navy);font-weight:700}
+
+.out{display:grid;grid-template-columns:2fr 1fr;gap:18px;align-items:start}
+@media(max-width:760px){.out{grid-template-columns:1fr}}
+.out img{width:100%;border-radius:12px;border:1.5px solid rgba(31,81,148,.35);display:block}
+.out a{display:inline-block;margin-top:8px;color:var(--blue);font-weight:700;text-decoration:none}
+.saved{margin-top:14px;padding:12px 16px;border-radius:14px;background:var(--mint-tint);border:1.5px solid var(--mint);font-weight:500;line-height:1.8}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="logo" src="/logo_navy.png" alt="رؤية">
+  <section class="hero">
+    <h1>استوديو <em>الثمبنيل</em></h1>
+    <p>حط الفيديو، ونطلّع منه أحسن لقطة ونصمّمها بهوية رؤية، جاهزة لليوتيوب وللستوري.</p>
+    <i></i>
+  </section>
+
+  <div class="card" id="c1">
+    <h2>الفيديو</h2>
+    <label class="l" style="margin-top:0">رابط درايف · رابط خارجي · مسار على الجهاز <small>النظام يعرف النوع بنفسه</small></label>
+    <input class="field" id="src" placeholder="https://drive.google.com/file/d/.../view   أو   C:\Videos\clip.mp4" autocomplete="off" spellcheck="false">
+    <div class="detect" id="detect"><span class="dot"></span><span id="dtxt">النظام هيعرف نوع المصدر تلقائياً</span></div>
+    <label class="drop" id="dz"><input type="file" id="file" accept="video/*" hidden><b>أو اسحب الفيديو هنا / اضغط لاختياره من جهازك</b><small id="fname">MP4 · MOV · MKV</small></label>
+    <button class="btn" id="go">① حلّل الفيديو واستخرج اللقطات</button>
+    <div class="prog hide" id="bar1"><i></i></div>
+    <div id="msg"></div>
+  </div>
+
+  <div class="card hide" id="c2">
+    <h2>اللقطة والتصميم</h2>
+    <div class="hint">اللقطة المميزة ⭐ هي الأفضل تلقائياً — اضغط أي لقطة لاختيارها.</div>
+    <div class="grid" id="grid"></div>
+
+    <div class="g2">
+      <div><label class="l">العنوان على الثمبنيل</label><input class="field rtl" id="title" placeholder="مثال: سر نجاح مصنع الألبان"></div>
+      <div><label class="l">سطر صغير تحت العنوان <small>اختياري</small></label><input class="field rtl" id="subtitle" placeholder="مثال: الجزء الأول"></div>
+    </div>
+    <div class="g3">
+      <div><label class="l">تمديد حروف العنوان <small>إلزامي</small></label>
+        <select id="kash"><option value="1">خفيف</option><option value="2" selected>متوسط</option><option value="3">قوي</option></select></div>
+      <div><label class="l">ستايل العنوان</label>
+        <select id="style"><option value="-1" selected>تلقائي — يتغيّر مع كل تصميم</option>
+          <option value="0">منت ثلاثي الأبعاد</option><option value="1">ستيكر أبيض</option><option value="2">كتلة زرقاء</option><option value="3">حلقة منت</option>
+          <option value="4">مسطّح جريء</option><option value="5">ظل يمين</option><option value="6">كحلي بحد منت</option><option value="7">تدرّج منت وأزرق</option></select></div>
+      <div><label class="l">كلمات مفتاحية <small>فاضي = تلقائي · "-" = بدون</small></label><input class="field rtl" id="kw" placeholder="ألبان، تصنيع، جودة"></div>
+    </div>
+    <div class="g2">
+      <div><label class="l">شكل اليوتيوب</label>
+        <select id="land"><option value="photo" selected>لقطة بملء الإطار + تدرّج هوية رؤية</option><option value="design">تصميم كامل: خلفية رؤية + كارت لقطة</option></select></div>
+      <div><label class="l">شكل الستوري</label>
+        <select id="mode"><option value="design" selected>تصميم كامل: خلفية رؤية + عمود لقطات + كلمات</option><option value="crop">قص طولي حول الوجه</option><option value="blur">لقطة كبيرة على خلفية رؤية</option></select></div>
+    </div>
+    <button class="btn" id="render">② اعمل الثمبنيل</button>
+    <div class="prog hide" id="bar3"><i></i></div>
+    <div id="msg3"></div>
+  </div>
+
+  <div class="card hide" id="c3">
+    <h2>النتيجة <small id="stname" style="font-weight:300;font-size:14px"></small></h2>
+    <div class="out">
+      <div><b>يوتيوب 1280×720</b><br><img id="imgL" alt=""><br><a id="dl" download>⬇ تحميل</a></div>
+      <div><b>ستوري 1080×1920</b><br><img id="imgS" alt=""><br><a id="ds" download>⬇ تحميل</a></div>
+    </div>
+    <div class="saved" id="saved"></div>
+    <div class="acts">
+      <button class="btn sm hide" id="pickbtn" type="button">💾 اختر مكان الحفظ</button>
+      <button class="btn sm" id="restyle" type="button">🎲 ستايل جديد</button>
+      <button class="btn sm line" id="newv" type="button">فيديو جديد</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = location.protocol.startsWith('http') ? '' : 'http://127.0.0.1:5055';
+const $=id=>document.getElementById(id);
+let job=null, frame=null, last=null;
+function msg(t,e){$('msg').textContent=t;$('msg').className=e?'err':''}
+
+function detect(v){
+  v=v.trim().replace(/^["']|["']$/g,'');
+  if(!v) return null;
+  if(/drive\.google\.com|docs\.google\.com/i.test(v)) return ['☁ ملف على Google Drive — هيتحمّل وتختار مكان الحفظ','drive'];
+  if(/^https?:\/\//i.test(v)) return [/youtube\.com|youtu\.be|vimeo|facebook|fb\.watch|instagram|tiktok|x\.com|twitter/i.test(v)?'🔗 رابط منصّة — هيتحمّل تلقائياً':(/dropbox\.com/i.test(v)?'🔗 رابط Dropbox — هيتحمّل مباشرة':'🔗 رابط خارجي — هيتحمّل ويتحلّل'),'web'];
+  if(/^file:\/\//i.test(v)||/^[a-zA-Z]:[\\/]/.test(v)||/^\\\\/.test(v)||v.startsWith('/')) return ['💻 ملف على جهازك — الصور هتتحفظ جنبه تلقائياً','local'];
+  return ['؟ مش قادر أعرف النوع — اكتب رابط كامل أو مسار كامل','bad'];
+}
+$('src').addEventListener('input',()=>{
+  const r=detect($('src').value);
+  if(!r){$('detect').classList.remove('ok');$('dtxt').textContent='النظام هيعرف نوع المصدر تلقائياً';return}
+  $('dtxt').textContent=r[0]; $('detect').classList.toggle('ok',r[1]!=='bad');
+});
+const dz=$('dz');
+$('file').onchange=()=>{ if($('file').files[0]){ $('fname').textContent='📁 '+$('file').files[0].name; $('src').value=''; $('dtxt').textContent='⬆ ملف مرفوع — اختار مكان الحفظ بعد التصميم'; $('detect').classList.add('ok'); } };
+['dragover','dragenter'].forEach(e=>dz.addEventListener(e,ev=>{ev.preventDefault();dz.classList.add('over')}));
+['dragleave','drop'].forEach(e=>dz.addEventListener(e,ev=>{ev.preventDefault();dz.classList.remove('over')}));
+dz.addEventListener('drop',ev=>{ if(ev.dataTransfer.files[0]){$('file').files=ev.dataTransfer.files;$('file').onchange()} });
+
+$('go').onclick=async()=>{
+  const fd=new FormData(); const v=$('src').value.trim();
+  if($('file').files[0] && !v){ fd.append('file',$('file').files[0]); }
+  else { if(!v) return msg('الصق رابط أو مسار الفيديو، أو اسحب الملف',1);
+    const r=detect(v); if(r&&r[1]==='bad') return msg('الصيغة غير مفهومة: اكتب رابط يبدأ بـ http أو مسار كامل',1); fd.append('source',v); }
+  $('go').disabled=true; $('bar1').classList.remove('hide'); msg('جاري التحميل والتحليل… ممكن ياخد دقيقة للملفات الكبيرة');
+  try{
+    const r=await fetch(API+'/api/analyze',{method:'POST',body:fd}); const d=await r.json();
+    if(!d.ok) throw new Error(d.error);
+    job=d.job; frame=d.best; $('grid').innerHTML='';
+    d.items.forEach(it=>{
+      const el=document.createElement('div'); el.dataset.i=it.i;
+      el.innerHTML=`<img src="${API+it.url}" loading="lazy"><span>${it.i===d.best?'⭐ ':''}${it.t}s</span>${it.faces?'<span class="f">وجه</span>':''}`;
+      el.onclick=()=>sel(it.i); $('grid').appendChild(el);
+    });
+    sel(d.best); $('c2').classList.remove('hide'); msg('تم ✔ اختر لقطة وأكمل');
+    $('c2').scrollIntoView({behavior:'smooth'});
+  }catch(e){msg(e.message,1)}
+  $('go').disabled=false; $('bar1').classList.add('hide');
+};
+function sel(i){frame=i;document.querySelectorAll('#grid div').forEach(x=>x.classList.toggle('sel',+x.dataset.i===i))}
+
+$('render').onclick=async()=>{
+  $('render').disabled=true; $('bar3').classList.remove('hide'); $('msg3').className=''; $('msg3').textContent='جاري تصميم الثمبنيل…';
+  const kw=$('kw').value.trim();
+  try{
+    const r=await fetch(API+'/api/render',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      job,frame,title:$('title').value,subtitle:$('subtitle').value,kashida:+$('kash').value,style:+$('style').value,
+      keywords:kw==='-'?'':kw,chips:kw!=='-',land_layout:$('land').value,story_mode:$('mode').value})});
+    const d=await r.json(); if(!d.ok) throw new Error('فشل التصميم');
+    last=d; const t='?'+Date.now();
+    $('imgL').src=API+d.landscape+t; $('imgS').src=API+d.story+t;
+    $('dl').href=API+d.landscape; $('ds').href=API+d.story;
+    $('stname').textContent='· ستايل العنوان: '+d.style_name+' ('+(d.style+1)+'/'+d.styles+')';
+    $('pickbtn').classList.toggle('hide',!!d.saved_to);
+    $('saved').innerHTML=d.saved_to?('✅ اتحفظت تلقائياً في نفس فولدر الفيديو:<br><span style="direction:ltr;display:inline-block;font-family:monospace;font-size:13px">'+d.saved_to+'</span>')
+      :'الفيديو من الدرايف أو مرفوع: اضغط "اختر مكان الحفظ" وحدد الفولدر (اختار فولدر فرعي مش Downloads نفسه).';
+    $('msg3').textContent=''; $('c3').classList.remove('hide'); $('c3').scrollIntoView({behavior:'smooth'});
+  }catch(e){$('msg3').textContent=e.message;$('msg3').className='err'}
+  $('render').disabled=false; $('bar3').classList.add('hide');
+};
+$('restyle').onclick=()=>{ $('style').value='-1'; $('render').click() };
+$('newv').onclick=()=>location.reload();
+
+$('pickbtn').onclick=async()=>{
+  if(!last) return;
+  if(!window.showDirectoryPicker){ $('saved').textContent='المتصفح لا يدعم اختيار الفولدر، استخدم روابط التحميل (Chrome/Edge يدعمونه).'; return; }
+  try{
+    const dir=await window.showDirectoryPicker({mode:'readwrite'});
+    for(const [u,name] of [[last.landscape,`${last.stem}_youtube_1280x720.jpg`],[last.story,`${last.stem}_story_1080x1920.jpg`]]){
+      const blob=await (await fetch(API+u)).blob();
+      const fh=await dir.getFileHandle(name,{create:true}); const w=await fh.createWritable();
+      await w.write(blob); await w.close();
+    }
+    $('saved').textContent='✅ اتحفظت في: '+dir.name;
+  }catch(e){ if(e.name!=='AbortError') $('saved').textContent='تعذر الحفظ: '+e.message+' — جرّب فولدر فرعي بدل Downloads/Documents.'; }
+};
+</script>
+</body>
+</html>
