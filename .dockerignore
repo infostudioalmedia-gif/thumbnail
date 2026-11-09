@@ -1,0 +1,7 @@
+.venv
+jobs
+output
+err.txt
+out.txt
+__pycache__
+.git

@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: rooya-thumbnail
+    runtime: docker
+    plan: starter
+    healthCheckPath: /
+    envVars:
+      - key: ROOYA_CLOUD
+        value: "1"

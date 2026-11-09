@@ -16,7 +16,8 @@ JOBS = BASE / "jobs"
 JOBS.mkdir(exist_ok=True)
 
 app = Flask(__name__, static_folder=str(BASE / "static"), static_url_path="")
-app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 ** 3  # 20GB uploads
+CLOUD = os.environ.get("ROOYA_CLOUD") == "1"  # نسخة أونلاين: بدون مسارات محلية
+app.config["MAX_CONTENT_LENGTH"] = (2 if CLOUD else 20) * 1024 ** 3  # حد الرفع
 
 N_CANDIDATES = 24
 
@@ -103,6 +104,8 @@ def fetch_source(src, job_dir):
         return out
     if src.lower().startswith("file:///"):
         src = urllib.parse.unquote(src[8:])
+    if CLOUD:
+        raise RuntimeError("المسارات المحلية غير متاحة في النسخة الأونلاين. استخدم رابط درايف/رابط خارجي أو ارفع الملف.")
     p = Path(src)
     if not p.exists():
         raise RuntimeError(f"الملف غير موجود: {src}")
@@ -278,8 +281,21 @@ def index():
     return app.send_static_file("index.html")
 
 
+def _cleanup_jobs(max_age_h=3):
+    """امسح الشغل القديم عشان مساحة السيرفر ما تتملي."""
+    import time
+    now = time.time()
+    for d in JOBS.iterdir():
+        try:
+            if d.is_dir() and now - d.stat().st_mtime > max_age_h * 3600:
+                shutil.rmtree(d, ignore_errors=True)
+        except OSError:
+            pass
+
+
 @app.route("/api/analyze", methods=["POST"])
 def analyze():
+    _cleanup_jobs()
     job = uuid.uuid4().hex[:10]
     jd = JOBS / job
     jd.mkdir()
@@ -351,6 +367,10 @@ def jobs_files(p):
 
 
 if __name__ == "__main__":
-    import webbrowser, threading
-    threading.Timer(1.2, lambda: webbrowser.open("http://127.0.0.1:5055")).start()
-    app.run(host="127.0.0.1", port=5055, debug=False)
+    port = int(os.environ.get("PORT", 5055))
+    if CLOUD:
+        app.run(host="0.0.0.0", port=port, debug=False)
+    else:
+        import webbrowser, threading
+        threading.Timer(1.2, lambda: webbrowser.open(f"http://127.0.0.1:{port}")).start()
+        app.run(host="127.0.0.1", port=port, debug=False)
